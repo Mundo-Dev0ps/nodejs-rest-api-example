@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nodejs-rest-api-example
+  name: nodejs-rest-api-example
+spec:
+  containers:
+  - image: nodejs-rest-api-example:latest
+    imagePullPolicy: Never
+    name: nodejs-rest-api-example
+    ports:
+    - containerPort: 4000
+      protocol: TCP
+    resources:
+      limits:
+        memory: "120Mi"
+        cpu: "60m"
+      requests:
+        memory: "100Mi"
+        cpu: "50m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: nodejs-rest-api-example
+  name: nodejs-rest-api-example
+spec:
+  selector:
+    run: nodejs-rest-api-example
+  ports:
+  - port: 4000
+    protocol: TCP
+    targetPort: 4000
+  type: LoadBalancer
